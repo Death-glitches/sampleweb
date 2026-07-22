@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LINE-UP — Full Model Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0d10;
+    --surface:#14171b;
+    --surface-hi:#1b1f24;
+    --line:#262b31;
+    --text:#f5f3ee;
+    --text-dim:#8a8f98;
+    --amber:#e8b94b;
+
+    --c-luxury:#c9a227;
+    --c-everyday:#5f8fc4;
+    --c-classic:#c06a3a;
+    --c-electric:#3ed9c4;
+    --c-sport:#d94f4f;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .display{ font-family:'Oswald', sans-serif; text-transform:uppercase; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+
+  header{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px clamp(20px,5vw,64px);
+    background:rgba(11,13,16,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .logo{
+    font-family:'Oswald', sans-serif;
+    font-weight:700;
+    font-size:22px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    display:flex; align-items:center; gap:10px;
+  }
+  .logo::before{
+    content:"";
+    width:10px; height:10px;
+    background:var(--amber);
+    display:inline-block;
+    border-radius:1px;
+    transform:rotate(45deg);
+  }
+  .model-count{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--text-dim);
+    letter-spacing:0.05em;
+  }
+
+  .hero{
+    padding:clamp(60px,10vw,110px) clamp(20px,5vw,64px) 60px;
+    max-width:1200px;
+  }
+  .hero .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.2em;
+    color:var(--amber);
+    text-transform:uppercase;
+    margin-bottom:18px;
+    display:block;
+  }
+  .hero h1{
+    font-family:'Oswald', sans-serif;
+    font-weight:700;
+    font-size:clamp(40px, 8vw, 96px);
+    line-height:0.98;
+    letter-spacing:-0.01em;
+    text-transform:uppercase;
+  }
+  .hero h1 span{ color:var(--text-dim); }
+  .hero p{
+    max-width:560px;
+    margin-top:22px;
+    color:var(--text-dim);
+    font-size:16px;
+    line-height:1.6;
+  }
+  .hero .note{
+    margin-top:14px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:#5c6167;
+  }
+
+  .odometer{
+    margin-top:44px;
+    display:flex;
+    gap:0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .odometer .cell{
+    flex:1;
+    padding:18px 20px;
+    border-right:1px solid var(--line);
+  }
+  .odometer .cell:last-child{ border-right:none; }
+  .odometer .cell .num{
+    font-family:'Oswald', sans-serif;
+    font-size:clamp(22px,3vw,32px);
+    font-weight:600;
+    color:var(--amber);
+  }
+  .odometer .cell .lbl{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--text-dim);
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    margin-top:4px;
+  }
+
+  .filters{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    padding:0 clamp(20px,5vw,64px) 40px;
+    max-width:1200px;
+  }
+  .filter-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+    background:var(--surface);
+    border:1px solid var(--line);
+    padding:10px 18px;
+    border-radius:100px;
+    cursor:pointer;
+    transition:all .25s ease;
+    display:flex; align-items:center; gap:8px;
+  }
+  .filter-btn .dot{
+    width:7px; height:7px; border-radius:50%;
+    background:currentColor;
+  }
+  .filter-btn:hover{ color:var(--text); border-color:#3a4048; }
+  .filter-btn.active{
+    color:var(--bg);
+    background:var(--amber);
+    border-color:var(--amber);
+  }
+  .filter-btn.active .dot{ background:var(--bg); }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(340px, 1fr));
+    gap:22px;
+    padding:0 clamp(20px,5vw,64px) 100px;
+    max-width:1440px;
+  }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow:hidden;
+    transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+    display:flex;
+    flex-direction:column;
+  }
+  .card:hover{
+    transform:translateY(-4px);
+    border-color:var(--card-accent, var(--amber));
+    box-shadow:0 20px 40px -20px rgba(0,0,0,0.6);
+  }
+  .card.hidden{ display:none; }
+
+  .card-visual{
+    position:relative;
+    height:200px;
+    background:var(--surface-hi);
+    overflow:hidden;
+  }
+  .card-visual img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+    filter:saturate(1.02) contrast(1.03);
+    transition:transform .5s ease;
+  }
+  .card:hover .card-visual img{ transform:scale(1.05); }
+  .card-visual .fallback-svg{
+    width:100%; height:100%;
+    display:flex; align-items:center; justify-content:center;
+    background:
+      radial-gradient(circle at 30% 20%, var(--card-accent, var(--amber)) 0%, transparent 45%),
+      var(--surface-hi);
+  }
+  .card-visual .fallback-svg svg{
+    width:70%;
+    color:var(--card-accent, var(--amber));
+  }
+  .card-visual::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(11,13,16,0) 40%, rgba(11,13,16,0.55) 100%);
+    pointer-events:none;
+  }
+
+  .badge{
+    position:absolute;
+    top:14px; left:14px;
+    z-index:2;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--card-accent, var(--amber));
+    background:rgba(11,13,16,0.75);
+    border:1px solid var(--card-accent, var(--amber));
+    padding:5px 10px;
+    border-radius:100px;
+  }
+
+  .card-body{
+    padding:20px 20px 22px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    flex:1;
+  }
+  .card-title{
+    font-family:'Oswald', sans-serif;
+    font-size:21px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+  }
+  .card-title .year{
+    color:var(--text-dim);
+    font-size:13px;
+    font-family:'IBM Plex Mono', monospace;
+    display:block;
+    margin-top:2px;
+    text-transform:none;
+    letter-spacing:0;
+  }
+
+  .spec-strip{
+    display:flex;
+    border-top:1px dashed var(--line);
+    border-bottom:1px dashed var(--line);
+    padding:12px 0;
+  }
+  .spec{
+    flex:1;
+    text-align:left;
+    position:relative;
+    padding-right:10px;
+  }
+  .spec:not(:last-child)::after{
+    content:"";
+    position:absolute;
+    right:0; top:2px; bottom:2px;
+    width:1px;
+    background:var(--line);
+  }
+  .spec .v{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:14px;
+    font-weight:600;
+    color:var(--text);
+  }
+  .spec .k{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:9.5px;
+    color:var(--text-dim);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    margin-top:3px;
+  }
+
+  .features{
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .features li{
+    font-size:12.5px;
+    color:var(--text-dim);
+    display:flex;
+    align-items:flex-start;
+    gap:8px;
+    line-height:1.4;
+  }
+  .features li::before{
+    content:"";
+    width:5px; height:5px;
+    margin-top:6px;
+    flex-shrink:0;
+    background:var(--card-accent, var(--amber));
+    border-radius:1px;
+    transform:rotate(45deg);
+  }
+
+  .card-footer{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:auto;
+    padding-top:4px;
+  }
+  .price{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--text-dim);
+  }
+  .price b{ color:var(--text); font-weight:600; }
+  .view-btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color:var(--card-accent, var(--amber));
+    background:transparent;
+    border:1px solid var(--card-accent, var(--amber));
+    padding:8px 14px;
+    border-radius:4px;
+    cursor:pointer;
+    transition:all .2s ease;
+  }
+  .view-btn:hover{
+    background:var(--card-accent, var(--amber));
+    color:var(--bg);
+  }
+
+  footer{
+    padding:40px clamp(20px,5vw,64px) 50px;
+    border-top:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+    color:var(--text-dim);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+  }
+
+  @media (max-width:560px){
+    .odometer{ flex-wrap:wrap; }
+    .odometer .cell{ flex:1 1 50%; border-bottom:1px solid var(--line); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Line-Up</div>
+  <div class="model-count"><span id="visibleCount">14</span> / 14 MODELS SHOWN</div>
+</header>
+
+<section class="hero">
+  <span class="eyebrow">Full Product Showcase</span>
+  <h1>Every kind of<br><span>drive, on one lot.</span></h1>
+  <p>From gold-plated grand tourers to the electric future — real production models, real specs, filterable by category.</p>
+  <p class="note">Specs are approximate figures for the trims shown, for illustration purposes.</p>
+
+  <div class="odometer">
+    <div class="cell"><div class="num">14</div><div class="lbl">Models</div></div>
+    <div class="cell"><div class="num">5</div><div class="lbl">Categories</div></div>
+    <div class="cell"><div class="num">1965–2026</div><div class="lbl">Model Years</div></div>
+    <div class="cell"><div class="num">1,020hp</div><div class="lbl">Top of Range</div></div>
+  </div>
+</section>
+
+<div class="filters" id="filters"></div>
+
+<div class="grid" id="grid"></div>
+
+<footer>
+  <span>© 2026 LINE-UP SHOWCASE — DEMO SITE</span>
+  <span>PHOTOS VIA UNSPLASH · SPECS FOR REFERENCE ONLY</span>
+</footer>
+
+<script>
+const categories = [
+  { key:"luxury",   label:"Luxury",   color:"var(--c-luxury)" },
+  { key:"everyday",  label:"Everyday", color:"var(--c-everyday)" },
+  { key:"classic",   label:"Classic",  color:"var(--c-classic)" },
+  { key:"electric",  label:"Electric", color:"var(--c-electric)" },
+  { key:"sport",     label:"Sport",    color:"var(--c-sport)" },
+];
+
+const IMG = (id) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=900&q=80`;
+
+const cars = [
+  { name:"Rolls-Royce Ghost", year:"2020–present", cat:"luxury",
+    img: IMG("photo-1696233016084-30c8345d85ff"),
+    power:"563 hp", accel:"4.3s", top:"155 mph", price:"311,900",
+    features:["Starlight headliner", "Planar suspension system", "All-wheel steering", "Bespoke audio system"] },
+  { name:"Bentley Continental GT Speed", year:"2025–present", cat:"luxury",
+    img: IMG("photo-1749215530415-6a4cd6b31141"),
+    power:"771 hp", accel:"3.1s", top:"208 mph", price:"274,900",
+    features:["Rear-wheel steering", "Diamond-quilted leather", "Rotating display", "Naim for Bentley audio"] },
+  { name:"Mercedes-Benz S-Class S580", year:"2021–present", cat:"luxury",
+    img: IMG("photo-1629019879059-2a0345f93aea"),
+    power:"496 hp", accel:"4.4s", top:"130 mph", price:"122,650",
+    features:["MBUX Hyperscreen", "Rear-axle steering", "Executive rear seating", "Active ambient lighting"] },
+
+  { name:"Toyota Camry", year:"2025–present", cat:"everyday",
+    img: IMG("photo-1722088386522-7cafb8a7e234"),
+    power:"225 hp", accel:"7.5s", top:"135 mph", price:"28,400",
+    features:["Toyota Safety Sense 3.0", "Wireless CarPlay & Android Auto", "Adaptive cruise control", "Standard hybrid powertrain"] },
+  { name:"Honda CR-V", year:"2025–present", cat:"everyday",
+    img: IMG("photo-1614160859544-177611d11f6b"),
+    power:"190 hp", accel:"7.8s", top:"112 mph", price:"30,650",
+    features:["Honda Sensing suite", "Available AWD", "Hands-free power tailgate", "Wireless phone charging"] },
+  { name:"Volkswagen Golf", year:"2025–present", cat:"everyday",
+    img: IMG("photo-1546614042-7df3c24c9e5d"),
+    power:"158 hp", accel:"8.5s", top:"126 mph", price:"24,190",
+    features:["Digital Cockpit Pro", "LED matrix headlights", "IQ.Drive assist suite", "Adaptive chassis control"] },
+
+  { name:"Chevrolet Camaro SS", year:"1969", cat:"classic",
+    img: IMG("photo-1591293835940-934a7c4f2d9b"),
+    power:"325 hp", accel:"6.5s", top:"115 mph", price:"55,000",
+    features:["396ci big-block V8", "Rally Sport package", "Muncie 4-speed manual", "Bias-ply retro styling"] },
+  { name:"Ford Mustang GT", year:"1965", cat:"classic",
+    img: IMG("photo-1579211897986-63e1fcd564e0"),
+    power:"271 hp", accel:"8.0s", top:"115 mph", price:"45,000",
+    features:["289ci V8", "GT equipment group", "Rally-Pac gauge cluster", "4-speed manual"] },
+  { name:"Porsche 911 S", year:"1972", cat:"classic",
+    img: IMG("photo-1629019878898-77222937b153"),
+    power:"190 hp", accel:"6.6s", top:"137 mph", price:"130,000",
+    features:["Air-cooled flat-six", "5-speed manual", "Chrome bumper styling", "Fuchs alloy wheels"] },
+
+  { name:"Tesla Model S Plaid", year:"2026", cat:"electric",
+    img: IMG("photo-1536883442700-ffaa4d76e372"),
+    power:"1,020 hp", accel:"1.99s", top:"200 mph", price:"89,990",
+    features:["Tri-motor all-wheel drive", "17\" cinematic display", "396-mile EPA range", "Optional yoke steering"] },
+  { name:"Porsche Taycan Turbo S", year:"2026", cat:"electric",
+    img: IMG("photo-1570374910698-6db3d787e6fb"),
+    power:"750 hp", accel:"2.6s", top:"161 mph", price:"195,000",
+    features:["800V charging architecture", "Porsche Active Ride", "2-speed rear transmission", "Adaptive air suspension"] },
+  { name:"Rivian R1T", year:"2026", cat:"electric",
+    img: null,
+    power:"835 hp", accel:"3.0s", top:"112 mph", price:"69,900",
+    features:["Quad-motor all-wheel drive", "Gear Tunnel storage", "Camp kitchen option", "Adjustable air suspension"] },
+
+  { name:"Porsche 911 GT3", year:"2026", cat:"sport",
+    img: IMG("photo-1609679605571-4323e084c314"),
+    power:"502 hp", accel:"3.2s", top:"197 mph", price:"161,100",
+    features:["Naturally aspirated flat-six", "Rear-wheel steering", "Adjustable rear wing", "Track-tuned suspension"] },
+  { name:"Chevrolet Corvette Z06", year:"2026", cat:"sport",
+    img: null,
+    power:"670 hp", accel:"2.6s", top:"195 mph", price:"106,395",
+    features:["Flat-plane crank V8", "Magnetic Ride Control", "Front axle lift", "Available carbon-fiber pack"] },
+  { name:"BMW M4 Competition", year:"2026", cat:"sport",
+    img: IMG("photo-1610099610040-ab19f3a5ec35"),
+    power:"503 hp", accel:"3.5s", top:"180 mph", price:"81,100",
+    features:["Available M xDrive AWD", "Adaptive M suspension", "Carbon bucket seats", "M Drive Professional"] },
+];
+
+const carSVG = `
+<svg viewBox="0 0 200 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 62 C10 50 18 44 30 42 L46 24 C50 19 57 16 64 16 L128 16 C136 16 143 19 148 25 L164 42 C176 44 186 50 188 62 L188 68 C188 71 186 73 183 73 L172 73 C172 62 163 54 152 54 C141 54 132 62 132 73 L68 73 C68 62 59 54 48 54 C37 54 28 62 28 73 L17 73 C14 73 12 71 12 68 Z" fill="currentColor" opacity="0.9"/>
+  <path d="M54 22 L60 40 L140 40 L146 22" stroke="#0b0d10" stroke-width="2" fill="none" opacity="0.5"/>
+  <circle cx="48" cy="73" r="14" fill="#0b0d10"/>
+  <circle cx="48" cy="73" r="7" fill="currentColor"/>
+  <circle cx="152" cy="73" r="14" fill="#0b0d10"/>
+  <circle cx="152" cy="73" r="7" fill="currentColor"/>
+</svg>`;
+
+const filtersEl = document.getElementById('filters');
+const gridEl = document.getElementById('grid');
+const countEl = document.getElementById('visibleCount');
+let activeFilter = 'all';
+
+function renderFilters(){
+  const allBtn = document.createElement('button');
+  allBtn.className = 'filter-btn active';
+  allBtn.dataset.key = 'all';
+  allBtn.innerHTML = `<span class="dot" style="background:var(--amber)"></span> All`;
+  filtersEl.appendChild(allBtn);
+
+  categories.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.dataset.key = c.key;
+    btn.innerHTML = `<span class="dot" style="background:${c.color}"></span> ${c.label}`;
+    filtersEl.appendChild(btn);
+  });
+
+  filtersEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if(!btn) return;
+    activeFilter = btn.dataset.key;
+    [...filtersEl.children].forEach(b => b.classList.toggle('active', b === btn));
+    applyFilter();
+  });
+}
+
+function renderGrid(){
+  cars.forEach(car => {
+    const cat = categories.find(c => c.key === car.cat);
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.cat = car.cat;
+    card.style.setProperty('--card-accent', cat.color);
+
+    const visualInner = car.img
+      ? `<img src="${car.img}" alt="${car.name}" loading="lazy">`
+      : `<div class="fallback-svg">${carSVG}</div>`;
+
+    const featuresHTML = car.features.map(f => `<li>${f}</li>`).join('');
+
+    card.innerHTML = `
+      <div class="card-visual">
+        <span class="badge">${cat.label}</span>
+        ${visualInner}
+      </div>
+      <div class="card-body">
+        <div class="card-title">${car.name}<span class="year">${car.year}</span></div>
+        <div class="spec-strip">
+          <div class="spec"><div class="v">${car.power}</div><div class="k">Power</div></div>
+          <div class="spec"><div class="v">${car.accel}</div><div class="k">0–60</div></div>
+          <div class="spec"><div class="v">${car.top}</div><div class="k">Top Speed</div></div>
+        </div>
+        <ul class="features">${featuresHTML}</ul>
+        <div class="card-footer">
+          <div class="price">From <b>$${car.price}</b></div>
+          <button class="view-btn">Full Spec</button>
+        </div>
+      </div>
+    `;
+    gridEl.appendChild(card);
+  });
+}
+
+function applyFilter(){
+  const cards = [...gridEl.children];
+  let visible = 0;
+  cards.forEach(card => {
+    const match = activeFilter === 'all' || card.dataset.cat === activeFilter;
+    card.classList.toggle('hidden', !match);
+    if(match) visible++;
+  });
+  countEl.textContent = visible;
+}
+
+renderFilters();
+renderGrid();
+applyFilter();
+</script>
+
+</body>
+</html>
